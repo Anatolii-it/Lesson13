@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 
 void sortDescending(int arr[], int n) {
@@ -34,18 +35,19 @@ int main() {
     // Сортуємо числа у порядку зменшення
     sortDescending(numbers, count);
 
-    FILE* outputFile = fopen("output.txt", "w");  // Відкриваємо файл для запису
+    FILE* outputFile = fopen("output.bin", "wb");  // Відкриваємо файл для запису в бінарному режимі
     if (!outputFile) {
         printf("Не вдалося відкрити файл для запису!\n");
         return 1;
     }
 
     // Записуємо відсортовані числа у файл
-    for (int i = 0; i < count; ++i) {
-        fprintf(outputFile, "%d\n", numbers[i]);
+    size_t written = fwrite(numbers, sizeof(int), count, outputFile);
+    if (written != count) {
+        printf("Помилка запису у файл!\n");
     }
     fclose(outputFile);
 
-    printf("Числа успішно відсортовані та записані у файл output.txt\n");
+    printf("Числа успішно відсортовані та записані у файл output.bin\n");
     return 0;
 }
